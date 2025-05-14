@@ -54,7 +54,7 @@
     <div class="confetti" id="confetti"></div>
 
     <script>
-        // Update followers count every 5 seconds
+        // Update followers count every 50 seconds (50000 ms)
         setInterval(function() {
             // Fetch the followers.json file from the raw URL
             fetch('https://raw.githubusercontent.com/Ismailcny/instagram-counter-demo/7a7a1c9d0a5d227f24acc57473f5ce7c5ff79088/data/followers.json') // Raw URL of followers.json
@@ -71,7 +71,7 @@
                 .catch(err => {
                     console.error('Error fetching followers:', err);
                 });
-        }, 5000); // Every 5 seconds
+        }, 50000); // Every 50 seconds
 
         // Function to trigger confetti animation
         function showConfetti() {
