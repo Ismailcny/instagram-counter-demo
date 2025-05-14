@@ -1,0 +1,11 @@
+body {
+  margin: 0; padding: 0; height: 100vh;
+  background: url('assets/fb111c30-497e-4649-8567-08545618d707.jpg') center/cover no-repeat;
+  display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; position: relative;
+}
+.overlay {
+  text-align: center; background: rgba(0,0,0,0.5); padding: 2rem; border-radius: 1rem; z-index: 1;
+}
+#profilePic { width: 140px; height: 140px; border-radius: 50%; border: 4px solid white; margin-bottom: 1rem; }
+#followerCount { font-size: 3rem; font-weight: bold; color: white; }
+#confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
