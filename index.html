@@ -1,42 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Background with Follower Count</title>
-<style>
-  html, body {
-    margin: 0; 
-    height: 100%;
-    font-family: Arial, sans-serif;
-  }
-  body {
-    background: url('https://raw.githubusercontent.com/Ismailcny/instagram-counter-demo/main/fb111c30-497e-4649-8567-08545618d707.jpg') no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .counter-container {
-    background-color: rgba(255, 255, 255, 0.8); /* white with some transparency */
-    padding: 10px 20px;
-    border-radius: 10px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>@hildekeyf • Live Followers</title>
+  <style>
+    html, body { margin:0; padding:0; height:100%; }
+    body {
+      background: url('https://raw.githubusercontent.com/Ismailcny/instagram-counter-demo/main/fb111c30-497e-4649-8567-08545618d707.jpg')
+        center/cover no-repeat fixed;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      font-family:Arial,sans-serif; color:#fff;
+      text-align:center;
+    }
+    img.profile {
+      width:150px; height:150px;
+      border-radius:50%;
+      border:4px solid #fff;
+      object-fit:cover;
+      box-shadow:0 4px 12px rgba(0,0,0,0.5);
+    }
+    #count {
+      font-size:4rem; font-weight:700;
+      margin-top:20px;
+      text-shadow:0 2px 6px rgba(0,0,0,0.7);
+    }
+    canvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+  </style>
 </head>
 <body>
 
-<div class="counter-container">
-  <iframe 
-    height="80px" 
-    width="300px" 
-    frameborder="0" 
-    src="https://livecounts.nl/instagram-realtime/embed/?u=hildekeyf" 
-    style="border: 0; width: 300px; height: 80px; background-color: #FFF;"
-    allowtransparency="true"
-    scrolling="no"
-  ></iframe>
-</div>
+  <img class="profile" 
+    src="https://scontent-fra5-1.cdninstagram.com/v/t51.2885-19/495493122_17913514821099074_8120261237118233225_n.jpg"
+    alt="@hildekeyf">
 
+  <div id="count">Loading…</div>
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    const EMBED_URL = 'https://livecounts.nl/instagram-realtime/embed/?u=hildekeyf';
+    const PROXY    = url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+    const countEl  = document.getElementById('count');
+    let lastCount  = 0;
+
+    async function pollEmbed() {
+      try {
+        // Fetch the embed HTML through a CORS proxy
+        const res  = await fetch(PROXY(EMBED_URL));
+        const html = await res.text();
+
+        // Parse the follower count from the embed HTML:
+        // The embed uses an odometer; the current count is the inner text of .followers-odometer
+        const match = html.match(/class="followers-odometer[^>]*>(\d[\d,]*)/);
+        if (!match) throw 'Count not found';
+
+        // Normalize the number
+        const current = parseInt(match[1].replace(/,/g, ''), 10);
+        countEl.textContent = current.toLocaleString();
+
+        if (lastCount && current > lastCount) {
+          confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        }
+        lastCount = current;
+      } catch (err) {
+        console.error('Polling error:', err);
+        countEl.textContent = 'Error';
+      }
+    }
+
+    // Initial poll + every 50s
+    pollEmbed();
+    setInterval(pollEmbed, 50000);
+  </script>
 </body>
 </html>
