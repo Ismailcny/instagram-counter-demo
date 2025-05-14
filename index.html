@@ -42,23 +42,21 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
     const EMBED_URL = 'https://livecounts.nl/instagram-realtime/embed/?u=hildekeyf';
-    const PROXY    = url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-    const countEl  = document.getElementById('count');
-    let lastCount  = 0;
+    const PROXY     = u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`;
+    const countEl   = document.getElementById('count');
+    let lastCount   = 0;
 
     async function pollEmbed() {
       try {
-        // Fetch the embed HTML through a CORS proxy
         const res  = await fetch(PROXY(EMBED_URL));
         const html = await res.text();
 
-        // Parse the follower count from the embed HTML:
-        // The embed uses an odometer; the current count is the inner text of .followers-odometer
-        const match = html.match(/class="followers-odometer[^>]*>(\d[\d,]*)/);
-        if (!match) throw 'Count not found';
+        // Extract all odometer-value spans
+        const values = [...html.matchAll(/<span class="odometer-value">(\d+)<\/span>/g)]
+                         .map(m => m[1]);
+        if (!values.length) throw 'No digits found';
 
-        // Normalize the number
-        const current = parseInt(match[1].replace(/,/g, ''), 10);
+        const current = parseInt(values.join(''), 10);
         countEl.textContent = current.toLocaleString();
 
         if (lastCount && current > lastCount) {
@@ -71,7 +69,7 @@
       }
     }
 
-    // Initial poll + every 50s
+    // Initial poll + every 50 seconds
     pollEmbed();
     setInterval(pollEmbed, 50000);
   </script>
