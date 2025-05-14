@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>@hildekeyf • Live Followers</title>
   <style>
     html, body { margin:0; padding:0; height:100%; }
     body {
-      background: url('https://raw.githubusercontent.com/Ismailcny/instagram-counter-demo/main/fb111c30-497e-4649-8567-08545618d707.jpg')
-        center/cover no-repeat fixed;
+      background: url('fb111c30-497e-4649-8567-08545618d707.jpg') center/cover no-repeat fixed;
       display:flex; flex-direction:column;
       align-items:center; justify-content:center;
-      font-family:Arial,sans-serif; color:#fff;
-      text-align:center;
+      font-family: Arial, sans-serif; color: #fff;
+      text-align: center;
     }
     img.profile {
       width:150px; height:150px;
@@ -20,58 +19,47 @@
       border:4px solid #fff;
       object-fit:cover;
       box-shadow:0 4px 12px rgba(0,0,0,0.5);
+      margin-bottom: 20px;
     }
     #count {
       font-size:4rem; font-weight:700;
-      margin-top:20px;
       text-shadow:0 2px 6px rgba(0,0,0,0.7);
     }
-    canvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+    canvas { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; }
   </style>
 </head>
 <body>
-
-  <img class="profile" id="profilePic" 
-    src="" alt="@hildekeyf’s profile picture">
-
+  <img class="profile" src="icon.png" alt="@hildekeyf profile picture" id="profilePic" />
   <div id="count">Loading…</div>
   <canvas id="confetti-canvas"></canvas>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
     const user = 'hildekeyf';
-    // Instagram JSON endpoint (undocumented) + CORS proxy
     const apiUrl = 'https://api.allorigins.win/raw?url='
       + encodeURIComponent(`https://www.instagram.com/${user}/?__a=1&__d=dis`);
-    const profileEl = document.getElementById('profilePic');
-    const countEl   = document.getElementById('count');
-    let lastCount   = 0;
+    const countEl = document.getElementById('count');
+    let lastCount = 0;
 
     async function update() {
       try {
-        const res  = await fetch(apiUrl);
+        const res = await fetch(apiUrl);
         const json = await res.json();
         const userData = json.graphql.user;
-
-        // Update profile picture
-        profileEl.src = userData.profile_pic_url_hd;
-
-        // Update follower count
+        // Update follower count text
         const cnt = userData.edge_followed_by.count;
         countEl.textContent = cnt.toLocaleString();
 
-        // Trigger confetti if new followers
         if (lastCount && cnt > lastCount) {
           confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         }
         lastCount = cnt;
       } catch (e) {
-        console.error('Fetch error:', e);
+        console.error('Error fetching followers:', e);
         countEl.textContent = 'Error';
       }
     }
 
-    // Initial fetch + every 50 seconds
     update();
     setInterval(update, 50000);
   </script>
