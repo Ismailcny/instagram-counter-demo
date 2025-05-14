@@ -1,18 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>@hildekeyf • Followers</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Follower Counter</title>
+    <style>
+        /* Background setup */
+        body {
+            background: url('https://raw.githubusercontent.com/Ismailcny/instagram-counter-demo/main/fb111c30-497e-4649-8567-08545618d707.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        /* Profile image styling */
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid white;
+        }
+
+        /* Followers counter styling */
+        #followers {
+            font-size: 50px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Style for the confetti effect */
+        .confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: none;
+        }
+
+    </style>
 </head>
 <body>
-  <canvas id="confetti-canvas"></canvas>
-  <div class="overlay">
-    <img id="profilePic" src="https://scontent-fra5-1.cdninstagram.com/v/t51.2885-19/495493122_17913514821099074_8120261237118233225_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=scontent-fra5-1.cdninstagram.com&_nc_cat=102&_nc_oc=Q6cZ2QGJf6t1Qq2LcSSYTyJEDdgLxR1GvuvtYmdQ2Q2CgSfAxBa2V2srrQzKm9kC2QK0cY8&_nc_ohc=MTEqkq58gLIQ7kNvwEhldHX&_nc_gid=yZLj96ztY2Y7nk8KAg_luA&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfIAEeFXeH-C0Ke22TwxnGIrOXkszz7xZAyyRqMKO2ZtqA&oe=682ADD4A&_nc_sid=8b3546" alt="Profile Picture" />
-    <div id="followerCount">—</div>
-  </div>
-  <script src="confetti.min.js"></script>
-  <script src="script.js"></script>
+
+    <!-- Profile Picture -->
+    <img class="profile-image" src="https://scontent-fra5-1.cdninstagram.com/v/t51.2885-19/495493122_17913514821099074_8120261237118233225_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=scontent-fra5-1.cdninstagram.com&_nc_cat=102&_nc_oc=Q6cZ2QGJf6t1Qq2LcSSYTyJEDdgLxR1GvuvtYmdQ2Q2CgSfAxBa2V2srrQzKm9kC2QK0cY8&_nc_ohc=MTEqkq58gLIQ7kNvwEhldHX&_nc_gid=yZLj96ztY2Y7nk8KAg_luA&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfIAEeFXeH-C0Ke22TwxnGIrOXkszz7xZAyyRqMKO2ZtqA&oe=682ADD4A&_nc_sid=8b3546" alt="Instagram Profile">
+
+    <!-- Followers counter -->
+    <div id="followers">Loading followers...</div>
+
+    <!-- Confetti -->
+    <div class="confetti" id="confetti"></div>
+
+    <script>
+        // Update followers count every 5 seconds
+        setInterval(function() {
+            // Fetch the followers.json file
+            fetch('followers.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Display followers count in the #followers element
+                    const followersCount = data.followers_count;
+                    document.getElementById('followers').textContent = followersCount;
+
+                    // Show confetti if followers count increases
+                    if (followersCount > 0 && followersCount % 10 === 0) {
+                        showConfetti();
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching followers:', err);
+                });
+        }, 5000); // Every 5 seconds
+
+        // Function to trigger confetti animation
+        function showConfetti() {
+            const confettiElement = document.getElementById('confetti');
+            confettiElement.style.display = 'block';
+            
+            // You can add a confetti library like this one:
+            // https://cdn.jsdelivr.net/npm/canvas-confetti
+            // For now, just show it for 3 seconds
+            setTimeout(() => {
+                confettiElement.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+
 </body>
 </html>
