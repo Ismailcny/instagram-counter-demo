@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>@hildekeyf</title>
+  <title>@hildekeyf • Live Followers</title>
   <style>
     html, body { margin:0; padding:0; height:100%; }
     body {
@@ -31,47 +31,49 @@
 </head>
 <body>
 
-  <img class="profile" 
-    src="https://scontent-fra5-1.cdninstagram.com/v/t51.2885-19/495493122_17913514821099074_8120261237118233225_n.jpg"
-    alt="@hildekeyf">
+  <img class="profile" id="profilePic" 
+    src="" alt="@hildekeyf’s profile picture">
 
   <div id="count">Loading…</div>
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- Confetti library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
-    const EMBED_URL = 'https://livecounts.nl/instagram-realtime/embed/?u=hildekeyf';
-    const PROXY     = u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`;
+    const user = 'hildekeyf';
+    // Instagram JSON endpoint (undocumented) + CORS proxy
+    const apiUrl = 'https://api.allorigins.win/raw?url='
+      + encodeURIComponent(`https://www.instagram.com/${user}/?__a=1&__d=dis`);
+    const profileEl = document.getElementById('profilePic');
     const countEl   = document.getElementById('count');
     let lastCount   = 0;
 
-    async function pollEmbed() {
+    async function update() {
       try {
-        const res  = await fetch(PROXY(EMBED_URL));
-        const html = await res.text();
+        const res  = await fetch(apiUrl);
+        const json = await res.json();
+        const userData = json.graphql.user;
 
-        // Extract all odometer-value spans
-        const values = [...html.matchAll(/<span class="odometer-value">(\d+)<\/span>/g)]
-                         .map(m => m[1]);
-        if (!values.length) throw 'No digits found';
+        // Update profile picture
+        profileEl.src = userData.profile_pic_url_hd;
 
-        const current = parseInt(values.join(''), 10);
-        countEl.textContent = current.toLocaleString();
+        // Update follower count
+        const cnt = userData.edge_followed_by.count;
+        countEl.textContent = cnt.toLocaleString();
 
-        if (lastCount && current > lastCount) {
-          confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        // Trigger confetti if new followers
+        if (lastCount && cnt > lastCount) {
+          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         }
-        lastCount = current;
-      } catch (err) {
-        console.error('Polling error:', err);
+        lastCount = cnt;
+      } catch (e) {
+        console.error('Fetch error:', e);
         countEl.textContent = 'Error';
       }
     }
 
-    // Initial poll + every 50 seconds
-    pollEmbed();
-    setInterval(pollEmbed, 50000);
+    // Initial fetch + every 50 seconds
+    update();
+    setInterval(update, 50000);
   </script>
 </body>
 </html>
