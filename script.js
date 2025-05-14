@@ -12,9 +12,6 @@ async function updateInstagramData() {
     const data = await res.json();
     const user = data.graphql.user;
 
-    // Update profile picture
-    profilePicEl.src = user.profile_pic_url_hd;
-
     // Update follower count
     const count = user.edge_followed_by.count;
     if (count !== lastCount) {
