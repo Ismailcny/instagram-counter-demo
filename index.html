@@ -3,19 +3,40 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Background Only</title>
+<title>Background with Follower Count</title>
 <style>
   html, body {
     margin: 0; 
     height: 100%;
+    font-family: Arial, sans-serif;
   }
   body {
     background: url('https://raw.githubusercontent.com/Ismailcny/instagram-counter-demo/main/fb111c30-497e-4649-8567-08545618d707.jpg') no-repeat center center fixed;
     background-size: cover;
-    <iframe height="80px" width="300px" frameborder="0" src="https://livecounts.nl/instagram-realtime/embed/?u=hildekeyf" style="border: 0; width:300px; height:80px; background-color: #FFF;"></iframe>
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .counter-container {
+    background-color: rgba(255, 255, 255, 0.8); /* white with some transparency */
+    padding: 10px 20px;
+    border-radius: 10px;
   }
 </style>
 </head>
 <body>
+
+<div class="counter-container">
+  <iframe 
+    height="80px" 
+    width="300px" 
+    frameborder="0" 
+    src="https://livecounts.nl/instagram-realtime/embed/?u=hildekeyf" 
+    style="border: 0; width: 300px; height: 80px; background-color: #FFF;"
+    allowtransparency="true"
+    scrolling="no"
+  ></iframe>
+</div>
+
 </body>
 </html>
