@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Train Departures</title>
+  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Deutsche_Bahn_AG-Logo.svg/512px-Deutsche_Bahn_AG-Logo.svg.png" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      background: #202474;
+      overflow: hidden;
+    }
+    iframe {
+      width: 100vw;
+      height: 500vh;
+      border: none;
+      transform: translateY(0);
+      transition: transform 0.5s linear;
+      scrollbar-width: thin;
+      scrollbar-color: #202474 #202474;
+    }
+    iframe::-webkit-scrollbar {
+      width: 4px;
+    }
+    iframe::-webkit-scrollbar-thumb {
+      background-color: #202474;
+    }
+    iframe::-webkit-scrollbar-track {
+      background: #202474;
+    }
+  </style>
+</head>
+<body>
+
+  <iframe id="trainFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt"></iframe>
+
+  <script>
+    let scrollPos = 0;
+    let direction = 1;
+    let scrollSpeed = 2;
+    let maxScroll = 0;
+
+    const trainFrame = document.getElementById('trainFrame');
+
+    function updateMaxScroll() {
+      maxScroll = window.innerHeight * 4;
+    }
+
+    function scrollFrame() {
+      scrollPos += scrollSpeed * direction;
+      if (scrollPos >= maxScroll) {
+        direction = -1;
+        setTimeout(() => {
+          trainFrame.src = trainFrame.src;
+          scrollPos = 0;
+          direction = 1;
+        }, 2000);
+      }
+      trainFrame.style.transform = `translateY(-${scrollPos}px)`;
+    }
+
+    window.addEventListener('load', () => {
+      updateMaxScroll();
+      setInterval(scrollFrame, 50);
+    });
+
+    window.addEventListener('resize', updateMaxScroll);
+  </script>
+
+</body>
+</html>
