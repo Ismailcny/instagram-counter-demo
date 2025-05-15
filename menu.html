@@ -3,26 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Menu</title>
+  <title>Menu with Video Background</title>
   <style>
-    body {
-      background-color: black;
-      color: white;
-      font-family: Arial, sans-serif;
+    /* Reset and base */
+    body, html {
       margin: 0;
       padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    /* Fullscreen video iframe background */
+    .video-background {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none; /* So clicks go through */
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .video-background iframe {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 120vw;
+      height: 120vh;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+
+    /* Container for content */
+    .content {
+      position: relative;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      height: 100vh;
       justify-content: center;
+      align-items: center;
       gap: 40px;
+      background: rgba(0,0,0,0.4); /* Slight overlay to improve text visibility */
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
     }
 
     .icon-container {
       width: 150px;
       height: 150px;
-      margin-bottom: 20px;
     }
 
     .icon-container img {
@@ -41,7 +74,7 @@
     }
 
     button {
-      background-color: #444;
+      background-color: rgba(68, 68, 68, 0.8);
       border: none;
       color: white;
       padding: 15px 30px;
@@ -49,22 +82,37 @@
       cursor: pointer;
       border-radius: 8px;
       transition: background-color 0.3s ease;
+      backdrop-filter: blur(5px);
     }
 
     button:hover {
-      background-color: #666;
+      background-color: rgba(102, 102, 102, 0.8);
     }
   </style>
 </head>
 <body>
-  <div class="icon-container">
-    <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/19d68c98118c1a3441b48324c0c89881399548b6/icon.png" alt="Profile Icon" />
+
+  <div class="video-background">
+    <iframe
+      src="https://www.youtube.com/embed/9OquUp6x5IU?controls=0&autoplay=1&mute=1&loop=1&playlist=9OquUp6x5IU&modestbranding=1&showinfo=0&rel=0"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+      title="Background Video"
+      ></iframe>
   </div>
 
-  <nav>
-    <button onclick="location.href='instagram.html'">Instagram</button>
-    <button onclick="location.href='bus.html'">Bus Departures</button>
-    <button onclick="location.href='train.html'">Train Departures</button>
-  </nav>
+  <div class="content">
+    <div class="icon-container">
+      <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/19d68c98118c1a3441b48324c0c89881399548b6/icon.png" alt="Profile Icon" />
+    </div>
+
+    <nav>
+      <button onclick="location.href='instagram.html'">Instagram</button>
+      <button onclick="location.href='bus.html'">Bus Departures</button>
+      <button onclick="location.href='train.html'">Train Departures</button>
+    </nav>
+  </div>
+
 </body>
 </html>
