@@ -32,12 +32,36 @@
       object-fit: contain;
     }
 
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100vh;
+      background-color: #e30a0e;
+      color: white;
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 44px;
+      text-transform: uppercase;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 85px;
+      line-height: 1.05;
+      z-index: 5;
+    }
+
+    .sidebar span {
+      display: block;
+    }
+
     iframe {
       position: absolute;
       top: 80px;
-      left: 0;
-      width: 100%;
-      height: 500vh; /* Tall enough to scroll */
+      left: 100px; /* space for sidebar */
+      width: calc(100% - 100px);
+      height: 500vh;
       border: none;
       transform: translateY(0);
       transition: transform 0.5s linear;
@@ -49,6 +73,20 @@
   <!-- Logo -->
   <div class="logo-container">
     <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" />
+  </div>
+
+  <!-- Sidebar with "Abfahrt Zug" -->
+  <div class="sidebar">
+    <span>A</span>
+    <span>B</span>
+    <span>F</span>
+    <span>A</span>
+    <span>H</span>
+    <span>R</span>
+    <span>T</span>
+    <span style="margin-top: 20px;">Z</span>
+    <span>U</span>
+    <span>G</span>
   </div>
 
   <!-- Departures content -->
@@ -68,7 +106,7 @@
       if (scrollPos >= maxScroll) {
         direction = -1;
         setTimeout(() => {
-          frame.src = frame.src; // Reload iframe
+          frame.src = frame.src;
           scrollPos = 0;
           direction = 1;
         }, 2000);
