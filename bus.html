@@ -32,12 +32,36 @@
       object-fit: contain;
     }
 
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100vh;
+      background-color: #e30a0e;
+      color: white;
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 44px;
+      text-transform: uppercase;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 85px; /* ensures first letter is below logo */
+      line-height: 1.05;
+      z-index: 5;
+    }
+
+    .sidebar span {
+      display: block;
+    }
+
     iframe {
       position: absolute;
       top: 80px;
-      left: 0;
-      width: 100%;
-      height: 500vh; /* Enough height for scroll effect */
+      left: 100px; /* adjust for sidebar width */
+      width: calc(100% - 100px);
+      height: 500vh; /* long for scroll effect */
       border: none;
       transform: translateY(0);
       transition: transform 0.5s linear;
@@ -49,6 +73,20 @@
   <!-- Logo -->
   <div class="logo-container">
     <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" />
+  </div>
+
+  <!-- Sidebar with vertical text -->
+  <div class="sidebar">
+    <span>A</span>
+    <span>B</span>
+    <span>F</span>
+    <span>A</span>
+    <span>H</span>
+    <span>R</span>
+    <span>T</span>
+    <span style="margin-top: 20px;">B</span>
+    <span>U</span>
+    <span>S</span>
   </div>
 
   <!-- Bus departures -->
