@@ -3,71 +3,86 @@
 <head>
   <meta charset="UTF-8" />
   <title>Bus Departures</title>
-  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Deutsche_Bahn_AG-Logo.svg/512px-Deutsche_Bahn_AG-Logo.svg.png" />
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100vh;
       width: 100vw;
-      background: #202474;
+      background: black;
       overflow: hidden;
     }
+
+    .logo-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .logo-container img {
+      height: 60px;
+      max-width: 90%;
+      object-fit: contain;
+    }
+
     iframe {
-      width: 100vw;
-      height: 300vh;
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      height: 500vh; /* Enough height for scroll effect */
       border: none;
       transform: translateY(0);
       transition: transform 0.5s linear;
-      scrollbar-width: thin;
-      scrollbar-color: #202474 #202474;
-    }
-    iframe::-webkit-scrollbar {
-      width: 4px;
-    }
-    iframe::-webkit-scrollbar-thumb {
-      background-color: #202474;
-    }
-    iframe::-webkit-scrollbar-track {
-      background: #202474;
     }
   </style>
 </head>
 <body>
 
-  <iframe id="busFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt?verkehrsmittel=bus"></iframe>
+  <!-- Logo -->
+  <div class="logo-container">
+    <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" />
+  </div>
 
+  <!-- Bus departures -->
+  <iframe id="busFrame" src="https://www.bahnhof.de/bus-hildesheim/abfahrt"></iframe>
+
+  <!-- Auto-scroll script -->
   <script>
     let scrollPos = 0;
     let direction = 1;
     let scrollSpeed = 2;
-    let maxScroll = 0;
+    let maxScroll = window.innerHeight * 4;
 
-    const busFrame = document.getElementById('busFrame');
-
-    function updateMaxScroll() {
-      maxScroll = window.innerHeight * 1.5;
-    }
+    const frame = document.getElementById('busFrame');
 
     function scrollFrame() {
       scrollPos += scrollSpeed * direction;
       if (scrollPos >= maxScroll) {
         direction = -1;
         setTimeout(() => {
-          busFrame.src = busFrame.src;
+          frame.src = frame.src;
           scrollPos = 0;
           direction = 1;
         }, 2000);
       }
-      busFrame.style.transform = `translateY(-${scrollPos}px)`;
+      frame.style.transform = `translateY(-${scrollPos}px)`;
     }
 
     window.addEventListener('load', () => {
-      updateMaxScroll();
       setInterval(scrollFrame, 50);
     });
 
-    window.addEventListener('resize', updateMaxScroll);
+    window.addEventListener('resize', () => {
+      maxScroll = window.innerHeight * 4;
+    });
   </script>
 
 </body>
