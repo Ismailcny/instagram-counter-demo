@@ -6,43 +6,65 @@
   <title>Menu</title>
   <style>
     body {
-      background: #222;
+      background-color: black;
       color: white;
       font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
+      justify-content: center;
+      gap: 40px;
     }
-    h1 {
-      margin-bottom: 40px;
+
+    .icon-container {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 20px;
     }
-    .btn {
-      background-color: #1da1f2;
+
+    .icon-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      background-color: #444;
       border: none;
       color: white;
       padding: 15px 30px;
-      margin: 10px;
       font-size: 1.2rem;
-      border-radius: 8px;
       cursor: pointer;
-      width: 220px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
+      border-radius: 8px;
       transition: background-color 0.3s ease;
     }
-    .btn:hover {
-      background-color: #0d8ddb;
+
+    button:hover {
+      background-color: #666;
     }
   </style>
 </head>
 <body>
-  <h1>Navigation Menu</h1>
-  <a href="instagram.html" class="btn">Instagram Followers</a>
-  <a href="bus.html" class="btn">Bus Departures</a>
-  <a href="train.html" class="btn">Train Departures</a>
+  <div class="icon-container">
+    <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/19d68c98118c1a3441b48324c0c89881399548b6/icon.png" alt="Profile Icon" />
+  </div>
+
+  <nav>
+    <button onclick="location.href='instagram.html'">Instagram</button>
+    <button onclick="location.href='bus.html'">Bus Departures</button>
+    <button onclick="location.href='train.html'">Train Departures</button>
+  </nav>
 </body>
 </html>
