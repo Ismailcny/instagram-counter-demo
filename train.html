@@ -13,27 +13,52 @@
       background: #202474;
       overflow: hidden;
     }
+
+    .logo-container {
+      position: fixed;
+      top: 0;
+      width: 100vw;
+      background: #202474;
+      text-align: center;
+      z-index: 10;
+      padding: 10px 0;
+    }
+
+    .logo-container img {
+      height: 60px;
+      max-width: 90%;
+      object-fit: contain;
+    }
+
     iframe {
       width: 100vw;
       height: 500vh;
       border: none;
       transform: translateY(0);
       transition: transform 0.5s linear;
+      margin-top: 80px;
       scrollbar-width: thin;
       scrollbar-color: #202474 #202474;
     }
+
     iframe::-webkit-scrollbar {
       width: 4px;
     }
+
     iframe::-webkit-scrollbar-thumb {
       background-color: #202474;
     }
+
     iframe::-webkit-scrollbar-track {
       background: #202474;
     }
   </style>
 </head>
 <body>
+
+  <div class="logo-container">
+    <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" />
+  </div>
 
   <iframe id="trainFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt"></iframe>
 
