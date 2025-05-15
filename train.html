@@ -3,25 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <title>Train Departures</title>
-  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Deutsche_Bahn_AG-Logo.svg/512px-Deutsche_Bahn_AG-Logo.svg.png" />
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100vh;
       width: 100vw;
-      background: #202474;
+      background: black;
       overflow: hidden;
     }
 
     .logo-container {
       position: fixed;
       top: 0;
-      width: 100vw;
-      background: #202474;
-      text-align: center;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 10;
-      padding: 10px 0;
     }
 
     .logo-container img {
@@ -31,68 +33,56 @@
     }
 
     iframe {
-      width: 100vw;
-      height: 500vh;
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      height: 500vh; /* Tall enough to scroll */
       border: none;
       transform: translateY(0);
       transition: transform 0.5s linear;
-      margin-top: 80px;
-      scrollbar-width: thin;
-      scrollbar-color: #202474 #202474;
-    }
-
-    iframe::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    iframe::-webkit-scrollbar-thumb {
-      background-color: #202474;
-    }
-
-    iframe::-webkit-scrollbar-track {
-      background: #202474;
     }
   </style>
 </head>
 <body>
 
+  <!-- Logo -->
   <div class="logo-container">
     <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" />
   </div>
 
-  <iframe id="trainFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt"></iframe>
+  <!-- Departures content -->
+  <iframe id="departureFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt"></iframe>
 
+  <!-- Auto-scroll script -->
   <script>
     let scrollPos = 0;
     let direction = 1;
     let scrollSpeed = 2;
-    let maxScroll = 0;
+    let maxScroll = window.innerHeight * 4;
 
-    const trainFrame = document.getElementById('trainFrame');
-
-    function updateMaxScroll() {
-      maxScroll = window.innerHeight * 4;
-    }
+    const frame = document.getElementById('departureFrame');
 
     function scrollFrame() {
       scrollPos += scrollSpeed * direction;
       if (scrollPos >= maxScroll) {
         direction = -1;
         setTimeout(() => {
-          trainFrame.src = trainFrame.src;
+          frame.src = frame.src; // Reload iframe
           scrollPos = 0;
           direction = 1;
         }, 2000);
       }
-      trainFrame.style.transform = `translateY(-${scrollPos}px)`;
+      frame.style.transform = `translateY(-${scrollPos}px)`;
     }
 
     window.addEventListener('load', () => {
-      updateMaxScroll();
       setInterval(scrollFrame, 50);
     });
 
-    window.addEventListener('resize', updateMaxScroll);
+    window.addEventListener('resize', () => {
+      maxScroll = window.innerHeight * 4;
+    });
   </script>
 
 </body>
