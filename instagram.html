@@ -69,10 +69,34 @@
       border: none;
     }
 
-    .qr-code {
+    .qr-container {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      width: 100%;
+      max-width: 420px;
+      margin-top: 10px;
+    }
+
+    /* Instagram QR code style from your old file */
+    .instagram-qr {
       width: 75%;
       max-width: 190px;
       border-radius: 10px;
+      border: 1px solid black
+      /* No border, no padding, no background, just original style */
+    }
+
+    /* Menu QR code styled exactly like Instagram QR code but with white background, padding and thin black border */
+    .menu-qr {
+      width: 75%;
+      max-width: 190px;
+      border-radius: 10px;
+      background-color: white;
+      padding: 8px;
+      border: 3px solid black; /* Thin black border */
+      box-sizing: content-box;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
   </style>
 </head>
@@ -94,7 +118,23 @@
           scrolling="no"
         ></iframe>
       </div>
-      <img class="qr-code" src="https://github.com/Ismailcny/instagram-counter-demo/raw/main/qr.code.jpeg" alt="QR Code" />
+
+      <!-- Both QR Codes side by side -->
+      <div class="qr-container">
+        <!-- Instagram QR code -->
+        <img
+          class="instagram-qr"
+          src="https://github.com/Ismailcny/instagram-counter-demo/raw/main/qr.code.jpeg"
+          alt="Instagram QR Code"
+        />
+
+        <!-- PDF Menu QR code with red pixels, styled like Instagram QR but with border & background -->
+        <img
+          class="menu-qr"
+          src="https://api.qrserver.com/v1/create-qr-code/?data=https://docs.google.com/gview?url=https://github.com/Ismailcny/instagram-counter-demo/raw/951a6bb621f7319e500ac1817dad21a04fe08cd6/dijital-menu01.pdf&embedded=true&size=180x180&margin=10&color=ff0000&bgcolor=ffffff"
+          alt="PDF Menu QR Code"
+        />
+      </div>
     </div>
   </div>
 
