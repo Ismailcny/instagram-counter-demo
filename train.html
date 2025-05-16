@@ -1,83 +1,155 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!-- Document type declaration -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Train Departures</title>
+  <title>Train Departures</title> <!-- Page title -->
+
+  <!-- Fonts: Poppins for general text, Rajdhani for clock and sidebar -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      width: 100vw;
-      background: black;
-      overflow: hidden;
+    :root {
+      --red: #e30a0e;     /* Accent color */
+      --black: #1a1a1a;   /* Dark background */
+      --beige: #F5EBDD;   /* Light background */
+      --dbblue: #192176;  /* DB Blue (Deutsche Bahn) */
     }
 
-    .logo-container {
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100vh;
+      width: 100vw;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--beige);
+      color: var(--black);
+      overflow: hidden; /* No scrollbars */
+      position: relative;
+    }
+
+    .top-bar {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 80px;
-      background: black;
+      background-color: var(--black);
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      padding: 0 20px 0 10px;
       z-index: 10;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .clock {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--beige);
+      letter-spacing: 3px;
+    }
+
+    .logo-container {
+      position: relative;
+      left: -25px;
     }
 
     .logo-container img {
       height: 60px;
-      max-width: 90%;
       object-fit: contain;
+      filter: drop-shadow(0 0 5px var(--red));
     }
 
     .sidebar {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100px;
-      height: 100vh;
-      background-color: #e30a0e;
-      color: white;
-      font-family: sans-serif;
-      font-weight: bold;
-      font-size: 44px;
-      text-transform: uppercase;
+      top: 90px;
+      left: 20px;
+      width: 70px;
+      height: calc(100vh - 110px);
+      background: var(--red);
+      color: var(--beige);
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 85px;
-      line-height: 1.05;
+      justify-content: flex-start;
+      padding-top: 40px;
+      font-size: 28px;
+      font-weight: 900;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 2px;
+      border-radius: 20px;
+      box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.4);
       z-index: 5;
     }
 
     .sidebar span {
-      display: block;
+      margin: 6px 0;
     }
 
     iframe {
       position: absolute;
-      top: 80px;
-      left: 100px; /* space for sidebar */
-      width: calc(100% - 100px);
-      height: 500vh;
+      top: 90px;
+      left: 110px;
+      width: calc(100% - 120px);
+      height: 3000px;
       border: none;
       transform: translateY(0);
-      transition: transform 0.5s linear;
+      transition: transform 0.5s ease-in-out;
+      border-radius: 20px;
+      background-color: var(--beige);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      scrollbar-width: thin;
+      scrollbar-color: var(--dbblue) var(--beige);
+    }
+
+    iframe::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    iframe::-webkit-scrollbar-track {
+      background: var(--beige);
+      border-radius: 10px;
+    }
+
+    iframe::-webkit-scrollbar-thumb {
+      background-color: var(--dbblue);
+      border-radius: 10px;
+      border: 2px solid var(--beige);
+    }
+
+    .right-bar {
+      position: fixed;
+      top: 60px;
+      right: 0;
+      width: 50px;
+      height: 100vh;
+      background-color: var(--dbblue);
+      z-index: 9;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
     }
   </style>
 </head>
 <body>
 
-  <!-- Logo -->
-  <div class="logo-container">
-    <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" />
+  <!-- Top bar with clock and animated logo -->
+  <div class="top-bar">
+    <div class="clock" id="clock">--:--:--</div>
+    <div class="logo-container">
+      <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" />
+    </div>
   </div>
 
-  <!-- Sidebar with "Abfahrt Zug" -->
+  <!-- Left sidebar spelling "ABFAHRT ZUG" -->
   <div class="sidebar">
-    <span style="margin-top: 20px;"></span>
     <span>A</span>
     <span>B</span>
     <span>F</span>
@@ -85,29 +157,42 @@
     <span>H</span>
     <span>R</span>
     <span>T</span>
-    <span style="margin-top: 40px;">Z</span>
+    <span style="margin-top: 20px;">Z</span>
     <span>U</span>
     <span>G</span>
   </div>
 
-  <!-- Departures content -->
-  <iframe id="departureFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt"></iframe>
+  <!-- Iframe showing Hildesheim train departures -->
+  <iframe id="busFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt"></iframe>
 
-  <!-- Auto-scroll script -->
+  <!-- Right decorative bar -->
+  <div class="right-bar"></div>
+
+  <!-- JS: auto-scroll + clock -->
   <script>
     let scrollPos = 0;
     let direction = 1;
     let scrollSpeed = 2;
-    let maxScroll = window.innerHeight * 4;
+    let maxScroll = 3000;
+    const frame = document.getElementById('busFrame');
 
-    const frame = document.getElementById('departureFrame');
+    // Try to determine how far we can scroll based on iframe content
+    frame.onload = () => {
+      try {
+        const contentDoc = frame.contentDocument || frame.contentWindow.document;
+        maxScroll = contentDoc.body.scrollHeight - frame.clientHeight;
+      } catch (e) {
+        maxScroll = 3000;
+      }
+    };
 
+    // Smooth scroll simulation
     function scrollFrame() {
       scrollPos += scrollSpeed * direction;
       if (scrollPos >= maxScroll) {
         direction = -1;
         setTimeout(() => {
-          frame.src = frame.src;
+          frame.src = frame.src; // reload iframe
           scrollPos = 0;
           direction = 1;
         }, 2000);
@@ -115,12 +200,20 @@
       frame.style.transform = `translateY(-${scrollPos}px)`;
     }
 
+    // Clock logic (updates every second)
+    function updateClock() {
+      const now = new Date();
+      const hrs = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const secs = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${hrs}:${mins}:${secs}`;
+    }
+
+    // Start clock and scrolling after page load
     window.addEventListener('load', () => {
       setInterval(scrollFrame, 50);
-    });
-
-    window.addEventListener('resize', () => {
-      maxScroll = window.innerHeight * 4;
+      updateClock();
+      setInterval(updateClock, 1000);
     });
   </script>
 
