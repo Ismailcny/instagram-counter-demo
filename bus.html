@@ -1,165 +1,153 @@
-<!DOCTYPE html> <!-- Document type declaration for HTML5 -->
-<html lang="en"> <!-- Root element with English language -->
-<head>
-  <meta charset="UTF-8" /> <!-- Character encoding set to UTF-8 -->
-  <title>Bus Departures</title> <!-- Page title shown in browser tab -->
+<!DOCTYPE html> <!-- Defines the document as HTML5 -->
+<html lang="de"> <!-- Root HTML element, language set to German -->
 
-  <!-- Google Fonts: Poppins (main text) and Rajdhani (clock/sidebar) -->
+<head>
+  <meta charset="UTF-8" /> <!-- Sets character encoding to UTF-8 -->
+  <title>Abfahrt Bus</title> <!-- Page title shown on browser tab -->
+
+  <!-- Import Google Fonts Poppins and Rajdhani -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Theme color variables */
+    /* Define color variables for easy reuse */
     :root {
-      --red: #e30a0e;         /* Main accent (red) */
-      --black: #1a1a1a;       /* Dark background */
-      --beige: #F5EBDD;       /* Light background / text */
-      --dbblue: #192176;      /* Deep blue (used for accents like scrollbar or right bar) */
+      --red: #e30a0e;     /* Red color used in sidebar */
+      --black: #1a1a1a;   /* Black color used in header */
+      --beige: #f5ebdd;   /* Beige background color */
+      --dbblue: #192176;  /* Dark blue color for right bar */
     }
 
-    /* Reset default margins and paddings, set box model */
+    /* Apply universal box-sizing and reset margin/padding */
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      box-sizing: border-box; /* Makes width/height include padding & border */
+      margin: 0;              /* Removes default margin */
+      padding: 0;             /* Removes default padding */
     }
 
-    /* Base body styles */
+    /* Set up base styles for html and body */
     html, body {
-      height: 100vh;                   /* Full viewport height */
-      width: 100vw;                    /* Full viewport width */
-      font-family: 'Poppins', sans-serif;  /* Default font */
-      background-color: var(--beige); /* Beige background */
-      color: var(--black);            /* Default text color */
-      overflow: hidden;               /* Prevents scroll bar */
-      position: relative;
+      height: 100vh;             /* Full viewport height */
+      width: 100vw;              /* Full viewport width */
+      font-family: 'Poppins', sans-serif; /* Main font */
+      background-color: var(--beige); /* Beige page background */
+      color: var(--black);       /* Default text color */
+      overflow: hidden;          /* Disable page scrolling */
     }
 
-    /* Header bar at the top */
+    /* Top header bar styling */
     .top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;                         /* Full width */
-      height: 80px;                        /* Fixed height */
-      background-color: var(--black);     /* Dark background */
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px 0 10px;              /* Spacing inside the bar */
-      z-index: 10;                         /* Above everything */
-      border-bottom-left-radius: 20px;    /* Rounded bottom corners */
+      position: fixed;               /* Fixes to viewport top */
+      top: 0;                       /* Align at very top */
+      left: 0;                      /* Align left */
+      width: 100%;                  /* Full width */
+      height: 80px;                 /* Fixed height */
+      background-color: var(--black); /* Black background */
+      display: flex;                /* Flex container for layout */
+      align-items: center;          /* Vertically center content */
+      justify-content: space-between; /* Space between clock and logo */
+      padding: 0 20px 0 10px;       /* Left and right padding */
+      z-index: 10;                 /* Above most other elements */
+      border-bottom-left-radius: 20px; /* Rounded bottom corners */
       border-bottom-right-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Drop shadow */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Drop shadow for depth */
     }
 
-    /* Digital clock styling */
+    /* Clock style */
     .clock {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 56px;
-      font-weight: 700;
-      color: var(--beige);      /* Matches beige background for contrast */
-      letter-spacing: 3px;      /* Space between digits */
+      font-family: 'Rajdhani', sans-serif; /* Clock uses Rajdhani font */
+      font-size: 56px;                      /* Large font size */
+      font-weight: 700;                     /* Bold text */
+      color: var(--beige);                  /* Beige text color */
+      letter-spacing: 3px;                  /* Space between letters */
     }
 
-    /* Container to control logo placement */
+    /* Logo container positioning */
     .logo-container {
-      position: relative;
-      left: -25px; /* Moves logo slightly to the left */
+      position: relative;  /* Position relative to parent */
+      left: -25px;         /* Shift left by 25 pixels */
     }
 
-    /* Logo image style */
+    /* Logo image styling */
     .logo-container img {
-      height: 60px;                                 /* Fixed height */
-      object-fit: contain;                          /* Maintains aspect ratio */
-      filter: drop-shadow(0 0 5px var(--red));      /* Adds red glow */
+      height: 60px;                      /* Fixed height */
+      object-fit: contain;               /* Keep aspect ratio */
+      filter: drop-shadow(0 0 5px var(--red)); /* Red glow shadow */
     }
 
-    /* Left vertical sidebar */
+    /* Left sidebar styling */
     .sidebar {
-      position: fixed;
-      top: 90px;                                   /* Below the top bar */
-      left: 20px;
-      width: 70px;                                 /* Narrow sidebar */
-      height: calc(100vh - 110px);                 /* Fills vertical space */
-      background: var(--red);                      /* Red background */
-      color: var(--beige);                         /* Beige text */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding-top: 40px;
-      font-size: 28px;
-      font-weight: 900;
-      font-family: 'Rajdhani', sans-serif;
-      letter-spacing: 2px;
-      border-radius: 20px;
-      box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.4);  /* Outer shadow */
-      z-index: 5;                                   /* Below top bar */
+      position: fixed;                     /* Fixes to viewport */
+      top: 100px;                         /* Start below top bar */
+      left: 20px;                        /* 20px from left edge */
+      width: 70px;                       /* Fixed width */
+      height: calc(100vh - 110px);       /* Fill remaining height */
+      background: var(--red);             /* Red background */
+      color: var(--beige);                /* Beige text color */
+      display: flex;                     /* Flex container */
+      flex-direction: column;             /* Stack vertically */
+      align-items: center;                /* Center horizontally */
+      justify-content: flex-start;        /* Align items to top */
+      padding-top: 40px;                  /* Padding from top */
+      font-size: 28px;                   /* Large font size */
+      font-weight: 900;                   /* Heavy font weight */
+      font-family: 'Rajdhani', sans-serif; /* Rajdhani font */
+      letter-spacing: 2px;                /* Spacing between letters */
+      border-radius: 20px;                /* Rounded corners */
+      box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.4); /* Shadow for depth */
+      z-index: 5;                        /* Below header */
     }
 
+    /* Vertical spacing between sidebar letters */
     .sidebar span {
-      margin: 6px 0; /* Space between each letter */
+      margin: 6px 0;
     }
 
-    /* iFrame containing the bus departure board */
+    /* Wrapper around the iframe */
+    .iframe-wrapper {
+      position: absolute;                     /* Positioned relative to nearest positioned ancestor */
+      top: 80px;                             /* Just below the top bar */
+      left: 110px;                           /* To the right of sidebar (70px + 20px margin + 20px extra) */
+      width: calc(100% - 130px);             /* Remaining width minus sidebar and right bar */
+      height: calc(100vh - 80px);            /* Full height minus top bar height */
+      overflow: hidden;                      /* Hide overflow content */
+    }
+
+    /* Iframe styling */
     iframe {
-      position: absolute;
-      top: 90px;                                    /* Starts below header */
-      left: 110px;                                  /* Leaves space for sidebar */
-      width: calc(100% - 120px);                    /* Full width minus sidebar & padding */
-      height: 3000px;                               /* Tall enough for scroll simulation */
-      border: none;
-      transform: translateY(0);                     /* Starting position */
-      transition: transform 0.5s ease-in-out;       /* Smooth scrolling effect */
-      border-radius: 20px;
-      background-color: var(--beige);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);   /* Subtle shadow */
-      scrollbar-width: thin;                        /* Firefox scrollbar */
-      scrollbar-color: var(--dbblue) var(--beige);  /* Firefox colors */
+      width: 100%;              /* Full width inside wrapper */
+      height: 3000px;           /* Large fixed height to allow scrolling */
+      border: none;             /* No border */
+      transform: translateY(0); /* Initial vertical position */
+      transition: transform 0.5s ease-in-out; /* Smooth scrolling effect */
     }
 
-    /* Custom scrollbars for WebKit (Chrome, Safari) */
-    iframe::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    iframe::-webkit-scrollbar-track {
-      background: var(--beige);
-      border-radius: 10px;
-    }
-
-    iframe::-webkit-scrollbar-thumb {
-      background-color: var(--dbblue);      /* Blue thumb */
-      border-radius: 10px;
-      border: 2px solid var(--beige);       /* Surround thumb with beige for padding effect */
-    }
-
-    /* Right vertical bar (decorative) */
+    /* Right blue vertical bar */
     .right-bar {
-      position: fixed;
-      top: 60px;                              /* Slightly overlaps top bar */
-      right: 0;
-      width: 50px;                            /* Narrow bar */
-      height: 100vh;
-      background-color: var(--dbblue);       /* DB blue background */
-      z-index: 9;                             /* Just under the top bar */
-      border-top-left-radius: 20px;
-      border-bottom-left-radius: 20px;
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Inner glow effect */
+      position: fixed;                      /* Fixed to viewport */
+      top: 60px;                          /* Slightly below top bar */
+      right: 0;                          /* Aligned right */
+      width: 50px;                       /* Fixed width */
+      height: 100vh;                    /* Full viewport height */
+      background-color: var(--dbblue);  /* Dark blue color */
+      z-index: 9;                       /* Below top bar */
+      border-top-left-radius: 20px;     /* Rounded top left corner */
+      border-bottom-left-radius: 20px;  /* Rounded bottom left corner */
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
     }
   </style>
 </head>
+
 <body>
 
-  <!-- Top bar with clock and logo -->
+  <!-- Top header bar containing clock and logo -->
   <div class="top-bar">
-    <div class="clock" id="clock">--:--:--</div> <!-- Live digital clock -->
+    <div class="clock" id="clock">--:--:--</div> <!-- Clock placeholder -->
     <div class="logo-container">
-      <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" /> <!-- Logo image -->
+      <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" />
     </div>
   </div>
 
-  <!-- Vertical sidebar with "ABFAHRT BUS" spelled out -->
+  <!-- Left vertical sidebar with letters spelling ABFAHRT BUS -->
   <div class="sidebar">
     <span>A</span>
     <span>B</span>
@@ -168,65 +156,66 @@
     <span>H</span>
     <span>R</span>
     <span>T</span>
-    <span style="margin-top: 20px;">B</span>
+    <span style="margin-top: 20px;">B</span> <!-- Extra margin before 'B' -->
     <span>U</span>
     <span>S</span>
   </div>
 
-  <!-- Main content: iFrame showing bus departures -->
-  <iframe id="busFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt?verkehrsmittel=bus"></iframe>
+  <!-- Wrapper for the bus departures iframe -->
+  <div class="iframe-wrapper">
+    <iframe id="busFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt?verkehrsmittel=bus"></iframe>
+  </div>
 
-  <!-- Decorative right-side bar -->
+  <!-- Right vertical blue bar -->
   <div class="right-bar"></div>
 
-  <!-- JavaScript for scrolling content and live clock -->
   <script>
-    let scrollPos = 0;                 // Current scroll Y position
-    let direction = 1;                 // 1 = scroll down, -1 = scroll up
-    let scrollSpeed = 2;              // Speed of scroll
-    let maxScroll = 3000;             // Max scroll value (will be updated dynamically)
-    const frame = document.getElementById('busFrame'); // Reference to the iframe
+    // Get reference to iframe element
+    const frame = document.getElementById('busFrame');
 
-    // When iframe loads, try to calculate max scroll height
-    frame.onload = () => {
-      try {
-        const contentDoc = frame.contentDocument || frame.contentWindow.document;
-        maxScroll = contentDoc.body.scrollHeight - frame.clientHeight;
-      } catch (e) {
-        maxScroll = 3000; // Fallback in case of cross-origin issues
-      }
-    };
+    // Current vertical scroll position (in pixels)
+    let scrollPos = 0;
 
-    // Scroll animation function
+    // Scroll speed (pixels per interval tick)
+    const scrollSpeed = 1.5;
+
+    // Max scroll distance before refresh (adjust to fit content length)
+    const maxScroll = 2000;
+
+    // Function to scroll iframe content upwards
     function scrollFrame() {
-      scrollPos += scrollSpeed * direction;
-      if (scrollPos >= maxScroll) {
-        direction = -1; // Start scrolling back up
+      scrollPos += scrollSpeed;  // Increase scroll position
+
+      if (scrollPos >= maxScroll) {  // Check if reached max scroll
         setTimeout(() => {
-          frame.src = frame.src; // Reload iframe content
-          scrollPos = 0;
-          direction = 1;
-        }, 2000); // Pause before restarting
+          frame.src = frame.src;  // Reload iframe to refresh content
+          scrollPos = 0;          // Reset scroll position
+        }, 1000);                 // Wait 1 second before reload
       }
-      frame.style.transform = `translateY(-${scrollPos}px)`; // Apply scroll effect
+
+      // Move iframe content up by scrollPos pixels
+      frame.style.transform = `translateY(-${scrollPos}px)`;
     }
 
-    // Update digital clock every second
+    // Function to update the clock display every second
     function updateClock() {
-      const now = new Date();
-      const hrs = String(now.getHours()).padStart(2, '0');
-      const mins = String(now.getMinutes()).padStart(2, '0');
-      const secs = String(now.getSeconds()).padStart(2, '0');
+      const now = new Date(); // Current date/time
+      const hrs = String(now.getHours()).padStart(2, '0');   // Format hours with leading zero
+      const mins = String(now.getMinutes()).padStart(2, '0'); // Format minutes
+      const secs = String(now.getSeconds()).padStart(2, '0'); // Format seconds
+
+      // Set clock text content to HH:MM:SS
       document.getElementById('clock').textContent = `${hrs}:${mins}:${secs}`;
     }
 
-    // Start animations after page fully loads
+    // Start scrolling and clock update when page loads
     window.addEventListener('load', () => {
-      setInterval(scrollFrame, 50);    // Start auto-scrolling
-      updateClock();                   // Set initial clock
-      setInterval(updateClock, 1000);  // Update every second
+      setInterval(scrollFrame, 50);   // Scroll iframe every 50ms (~20fps)
+      updateClock();                  // Initial clock update immediately
+      setInterval(updateClock, 1000); // Update clock every second
     });
   </script>
 
 </body>
+
 </html>
