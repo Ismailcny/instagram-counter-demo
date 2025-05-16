@@ -1,154 +1,140 @@
-<!DOCTYPE html> <!-- Document type declaration -->
-<html lang="en">
+<!DOCTYPE html> <!-- Defines the document type as HTML5 -->
+<html lang="de"> <!-- Root element, language set to German -->
 <head>
-  <meta charset="UTF-8" />
-  <title>Train Departures</title> <!-- Page title -->
+  <meta charset="UTF-8" /> <!-- Character encoding -->
+  <title>Abfahrt Zug</title> <!-- Page title -->
 
-  <!-- Fonts: Poppins for general text, Rajdhani for clock and sidebar -->
+  <!-- Link to Google Fonts for Poppins and Rajdhani fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --red: #e30a0e;     /* Accent color */
-      --black: #1a1a1a;   /* Dark background */
-      --beige: #F5EBDD;   /* Light background */
-      --dbblue: #192176;  /* DB Blue (Deutsche Bahn) */
+      --red: #e30a0e; /* Red color for sidebar */
+      --black: #1a1a1a; /* Black color for header */
+      --beige: #f5ebdd; /* Beige background color */
+      --dbblue: #192176; /* DB Blue color for right bar */
     }
 
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      box-sizing: border-box; /* Includes padding and border in element width/height */
+      margin: 0; /* Reset default margin */
+      padding: 0; /* Reset default padding */
     }
 
     html, body {
-      height: 100vh;
-      width: 100vw;
-      font-family: 'Poppins', sans-serif;
-      background-color: var(--beige);
-      color: var(--black);
-      overflow: hidden; /* No scrollbars */
-      position: relative;
+      height: 100vh; /* Full viewport height */
+      width: 100vw; /* Full viewport width */
+      font-family: 'Poppins', sans-serif; /* Main font */
+      background-color: var(--beige); /* Beige background */
+      color: var(--black); /* Default text color */
+      overflow: hidden; /* Prevent page scrolling */
     }
 
     .top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 80px;
-      background-color: var(--black);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px 0 10px;
-      z-index: 10;
-      border-bottom-left-radius: 20px;
-      border-bottom-right-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      position: fixed; /* Fixed positioning at top */
+      top: 0; /* Align to top */
+      left: 0; /* Align to left */
+      width: 100%; /* Full width */
+      height: 80px; /* Height of header */
+      background-color: var(--black); /* Black background */
+      display: flex; /* Flexbox for layout */
+      align-items: center; /* Vertically center items */
+      justify-content: space-between; /* Space between clock and logo */
+      padding: 0 20px 0 10px; /* Horizontal padding */
+      z-index: 10; /* On top of other elements */
+      border-bottom-left-radius: 20px; /* Rounded bottom left corner */
+      border-bottom-right-radius: 20px; /* Rounded bottom right corner */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Shadow for depth */
     }
 
     .clock {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 56px;
-      font-weight: 700;
-      color: var(--beige);
-      letter-spacing: 3px;
+      font-family: 'Rajdhani', sans-serif; /* Clock uses Rajdhani font */
+      font-size: 56px; /* Large text size */
+      font-weight: 700; /* Bold */
+      color: var(--beige); /* Beige color */
+      letter-spacing: 3px; /* Space between letters */
     }
 
     .logo-container {
-      position: relative;
-      left: -25px;
+      position: relative; /* Relative positioning */
+      left: -25px; /* Shift left by 25px */
     }
 
     .logo-container img {
-      height: 60px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 5px var(--red));
+      height: 60px; /* Logo height */
+      object-fit: contain; /* Keep aspect ratio */
+      filter: drop-shadow(0 0 5px var(--red)); /* Red shadow glow */
     }
 
     .sidebar {
-      position: fixed;
-      top: 90px;
-      left: 20px;
-      width: 70px;
-      height: calc(100vh - 110px);
-      background: var(--red);
-      color: var(--beige);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding-top: 40px;
-      font-size: 28px;
-      font-weight: 900;
-      font-family: 'Rajdhani', sans-serif;
-      letter-spacing: 2px;
-      border-radius: 20px;
-      box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.4);
-      z-index: 5;
+      position: fixed; /* Fixed sidebar */
+      top: 100px; /* Push down 100px below header */
+      left: 20px; /* 20px from left */
+      width: 70px; /* Sidebar width */
+      height: calc(100vh - 110px); /* Full height minus top and bottom margins */
+      background: var(--red); /* Red background */
+      color: var(--beige); /* Beige text color */
+      display: flex; /* Flexbox */
+      flex-direction: column; /* Vertical stacking */
+      align-items: center; /* Center horizontally */
+      justify-content: flex-start; /* Start at top */
+      padding-top: 40px; /* Top padding */
+      font-size: 28px; /* Text size */
+      font-weight: 900; /* Heavy font weight */
+      font-family: 'Rajdhani', sans-serif; /* Font */
+      letter-spacing: 2px; /* Letter spacing */
+      border-radius: 20px; /* Rounded corners */
+      box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.4); /* Shadow */
+      z-index: 5; /* Layer below header */
     }
 
     .sidebar span {
-      margin: 6px 0;
+      margin: 6px 0; /* Vertical spacing between letters */
+    }
+
+    .iframe-wrapper {
+      position: absolute; /* Positioned absolutely */
+      top: 80px; /* Just below top bar */
+      left: 110px; /* To the right of sidebar plus margin */
+      width: calc(100% - 130px); /* Width minus left sidebar and right bar */
+      height: calc(100vh - 80px); /* Full viewport height minus header */
+      overflow: hidden; /* Hide overflow */
+      /* No border-radius or shadow to keep sharp edges */
     }
 
     iframe {
-      position: absolute;
-      top: 90px;
-      left: 110px;
-      width: calc(100% - 120px);
-      height: 3000px;
-      border: none;
-      transform: translateY(0);
-      transition: transform 0.5s ease-in-out;
-      border-radius: 20px;
-      background-color: var(--beige);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-      scrollbar-width: thin;
-      scrollbar-color: var(--dbblue) var(--beige);
-    }
-
-    iframe::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    iframe::-webkit-scrollbar-track {
-      background: var(--beige);
-      border-radius: 10px;
-    }
-
-    iframe::-webkit-scrollbar-thumb {
-      background-color: var(--dbblue);
-      border-radius: 10px;
-      border: 2px solid var(--beige);
+      width: 100%; /* Full width of wrapper */
+      height: 3000px; /* Tall enough to cover content */
+      border: none; /* No border */
+      transform: translateY(0); /* Initial no vertical shift */
+      transition: transform 0.5s ease-in-out; /* Smooth vertical movement */
     }
 
     .right-bar {
-      position: fixed;
-      top: 60px;
-      right: 0;
-      width: 50px;
-      height: 100vh;
-      background-color: var(--dbblue);
-      z-index: 9;
-      border-top-left-radius: 20px;
-      border-bottom-left-radius: 20px;
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+      position: fixed; /* Fixed to right side */
+      top: 60px; /* Slightly below top bar */
+      right: 0; /* Align right */
+      width: 50px; /* Width of right bar */
+      height: 100vh; /* Full viewport height */
+      background-color: var(--dbblue); /* DB blue color */
+      z-index: 9; /* Just below top bar */
+      border-top-left-radius: 20px; /* Rounded top left */
+      border-bottom-left-radius: 20px; /* Rounded bottom left */
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Inner shadow */
     }
   </style>
 </head>
 <body>
 
-  <!-- Top bar with clock and animated logo -->
+  <!-- Top header bar with clock and logo -->
   <div class="top-bar">
-    <div class="clock" id="clock">--:--:--</div>
+    <div class="clock" id="clock">--:--:--</div> <!-- Clock display -->
     <div class="logo-container">
-      <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" />
+      <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" /> <!-- Logo image -->
     </div>
   </div>
 
-  <!-- Left sidebar spelling "ABFAHRT ZUG" -->
+  <!-- Left red vertical sidebar with letters -->
   <div class="sidebar">
     <span>A</span>
     <span>B</span>
@@ -162,58 +148,46 @@
     <span>G</span>
   </div>
 
-  <!-- Iframe showing Hildesheim train departures -->
-  <iframe id="busFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt"></iframe>
+  <!-- Wrapper for iframe with DB departures page -->
+  <div class="iframe-wrapper">
+    <iframe id="busFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt"></iframe> <!-- Iframe showing DB train departures -->
+  </div>
 
-  <!-- Right decorative bar -->
+  <!-- Right blue vertical bar -->
   <div class="right-bar"></div>
 
-  <!-- JS: auto-scroll + clock -->
   <script>
-    let scrollPos = 0;
-    let direction = 1;
-    let scrollSpeed = 2;
-    let maxScroll = 3000;
-    const frame = document.getElementById('busFrame');
+    const frame = document.getElementById('busFrame'); // Reference to iframe element
+    let scrollPos = 0; // Current scroll position in pixels
+    const scrollSpeed = 1.5; // Speed of scroll in pixels per interval
+    const maxScroll = 2000; // Max scroll distance before refresh (adjust as needed)
 
-    // Try to determine how far we can scroll based on iframe content
-    frame.onload = () => {
-      try {
-        const contentDoc = frame.contentDocument || frame.contentWindow.document;
-        maxScroll = contentDoc.body.scrollHeight - frame.clientHeight;
-      } catch (e) {
-        maxScroll = 3000;
-      }
-    };
-
-    // Smooth scroll simulation
     function scrollFrame() {
-      scrollPos += scrollSpeed * direction;
-      if (scrollPos >= maxScroll) {
-        direction = -1;
+      scrollPos += scrollSpeed; // Increase scroll position
+
+      if (scrollPos >= maxScroll) { // If reached max scroll
         setTimeout(() => {
-          frame.src = frame.src; // reload iframe
-          scrollPos = 0;
-          direction = 1;
-        }, 2000);
+          frame.src = frame.src; // Reload iframe to refresh content
+          scrollPos = 0; // Reset scroll position
+        }, 1000); // Pause for 1 second before reload
       }
-      frame.style.transform = `translateY(-${scrollPos}px)`;
+
+      frame.style.transform = `translateY(-${scrollPos}px)`; // Move iframe up by scrollPos pixels
     }
 
-    // Clock logic (updates every second)
     function updateClock() {
-      const now = new Date();
-      const hrs = String(now.getHours()).padStart(2, '0');
-      const mins = String(now.getMinutes()).padStart(2, '0');
-      const secs = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('clock').textContent = `${hrs}:${mins}:${secs}`;
+      const now = new Date(); // Current time
+      const hrs = String(now.getHours()).padStart(2, '0'); // Hours with leading zero
+      const mins = String(now.getMinutes()).padStart(2, '0'); // Minutes with leading zero
+      const secs = String(now.getSeconds()).padStart(2, '0'); // Seconds with leading zero
+      document.getElementById('clock').textContent = `${hrs}:${mins}:${secs}`; // Update clock display
     }
 
-    // Start clock and scrolling after page load
+    // When page loads, start scrolling and clock update intervals
     window.addEventListener('load', () => {
-      setInterval(scrollFrame, 50);
-      updateClock();
-      setInterval(updateClock, 1000);
+      setInterval(scrollFrame, 50); // Scroll iframe every 50 milliseconds
+      updateClock(); // Initial clock update
+      setInterval(updateClock, 1000); // Update clock every second
     });
   </script>
 
