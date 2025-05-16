@@ -1,83 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> <!-- Document type declaration for HTML5 -->
+<html lang="en"> <!-- Root element with English language -->
 <head>
-  <meta charset="UTF-8" />
-  <title>Bus Departures</title>
+  <meta charset="UTF-8" /> <!-- Character encoding set to UTF-8 -->
+  <title>Bus Departures</title> <!-- Page title shown in browser tab -->
+
+  <!-- Google Fonts: Poppins (main text) and Rajdhani (clock/sidebar) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
   <style>
-    html, body {
+    /* Theme color variables */
+    :root {
+      --red: #e30a0e;         /* Main accent (red) */
+      --black: #1a1a1a;       /* Dark background */
+      --beige: #F5EBDD;       /* Light background / text */
+      --dbblue: #192176;      /* Deep blue (used for accents like scrollbar or right bar) */
+    }
+
+    /* Reset default margins and paddings, set box model */
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      height: 100vh;
-      width: 100vw;
-      background: black;
-      overflow: hidden;
     }
 
-    .logo-container {
+    /* Base body styles */
+    html, body {
+      height: 100vh;                   /* Full viewport height */
+      width: 100vw;                    /* Full viewport width */
+      font-family: 'Poppins', sans-serif;  /* Default font */
+      background-color: var(--beige); /* Beige background */
+      color: var(--black);            /* Default text color */
+      overflow: hidden;               /* Prevents scroll bar */
+      position: relative;
+    }
+
+    /* Header bar at the top */
+    .top-bar {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 80px;
-      background: black;
+      width: 100%;                         /* Full width */
+      height: 80px;                        /* Fixed height */
+      background-color: var(--black);     /* Dark background */
       display: flex;
       align-items: center;
-      justify-content: center;
-      z-index: 10;
+      justify-content: space-between;
+      padding: 0 20px 0 10px;              /* Spacing inside the bar */
+      z-index: 10;                         /* Above everything */
+      border-bottom-left-radius: 20px;    /* Rounded bottom corners */
+      border-bottom-right-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Drop shadow */
     }
 
+    /* Digital clock styling */
+    .clock {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--beige);      /* Matches beige background for contrast */
+      letter-spacing: 3px;      /* Space between digits */
+    }
+
+    /* Container to control logo placement */
+    .logo-container {
+      position: relative;
+      left: -25px; /* Moves logo slightly to the left */
+    }
+
+    /* Logo image style */
     .logo-container img {
-      height: 60px;
-      max-width: 90%;
-      object-fit: contain;
+      height: 60px;                                 /* Fixed height */
+      object-fit: contain;                          /* Maintains aspect ratio */
+      filter: drop-shadow(0 0 5px var(--red));      /* Adds red glow */
     }
 
+    /* Left vertical sidebar */
     .sidebar {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100px;
-      height: 100vh;
-      background-color: #e30a0e;
-      color: white;
-      font-family: sans-serif;
-      font-weight: bold;
-      font-size: 44px;
-      text-transform: uppercase;
+      top: 90px;                                   /* Below the top bar */
+      left: 20px;
+      width: 70px;                                 /* Narrow sidebar */
+      height: calc(100vh - 110px);                 /* Fills vertical space */
+      background: var(--red);                      /* Red background */
+      color: var(--beige);                         /* Beige text */
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 85px; /* ensures first letter is below logo */
-      line-height: 1.05;
-      z-index: 5;
+      justify-content: flex-start;
+      padding-top: 40px;
+      font-size: 28px;
+      font-weight: 900;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 2px;
+      border-radius: 20px;
+      box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.4);  /* Outer shadow */
+      z-index: 5;                                   /* Below top bar */
     }
 
     .sidebar span {
-      display: block;
+      margin: 6px 0; /* Space between each letter */
     }
 
+    /* iFrame containing the bus departure board */
     iframe {
       position: absolute;
-      top: 80px;
-      left: 100px; /* adjust for sidebar width */
-      width: calc(100% - 100px);
-      height: 500vh; /* long for scroll effect */
+      top: 90px;                                    /* Starts below header */
+      left: 110px;                                  /* Leaves space for sidebar */
+      width: calc(100% - 120px);                    /* Full width minus sidebar & padding */
+      height: 3000px;                               /* Tall enough for scroll simulation */
       border: none;
-      transform: translateY(0);
-      transition: transform 0.5s linear;
+      transform: translateY(0);                     /* Starting position */
+      transition: transform 0.5s ease-in-out;       /* Smooth scrolling effect */
+      border-radius: 20px;
+      background-color: var(--beige);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);   /* Subtle shadow */
+      scrollbar-width: thin;                        /* Firefox scrollbar */
+      scrollbar-color: var(--dbblue) var(--beige);  /* Firefox colors */
+    }
+
+    /* Custom scrollbars for WebKit (Chrome, Safari) */
+    iframe::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    iframe::-webkit-scrollbar-track {
+      background: var(--beige);
+      border-radius: 10px;
+    }
+
+    iframe::-webkit-scrollbar-thumb {
+      background-color: var(--dbblue);      /* Blue thumb */
+      border-radius: 10px;
+      border: 2px solid var(--beige);       /* Surround thumb with beige for padding effect */
+    }
+
+    /* Right vertical bar (decorative) */
+    .right-bar {
+      position: fixed;
+      top: 60px;                              /* Slightly overlaps top bar */
+      right: 0;
+      width: 50px;                            /* Narrow bar */
+      height: 100vh;
+      background-color: var(--dbblue);       /* DB blue background */
+      z-index: 9;                             /* Just under the top bar */
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Inner glow effect */
     }
   </style>
 </head>
 <body>
 
-  <!-- Logo -->
-  <div class="logo-container">
-    <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" />
+  <!-- Top bar with clock and logo -->
+  <div class="top-bar">
+    <div class="clock" id="clock">--:--:--</div> <!-- Live digital clock -->
+    <div class="logo-container">
+      <img src="https://github.com/Ismailcny/instagram-counter-demo/raw/03fc8ceace2f72e7e45c5981f0cd340991424784/hildekeyf.png" alt="Logo" /> <!-- Logo image -->
+    </div>
   </div>
 
-  <!-- Sidebar with vertical text -->
+  <!-- Vertical sidebar with "ABFAHRT BUS" spelled out -->
   <div class="sidebar">
-    <span style="margin-top: 20px;"> </span>
     <span>A</span>
     <span>B</span>
     <span>F</span>
@@ -85,42 +168,63 @@
     <span>H</span>
     <span>R</span>
     <span>T</span>
-    <span style="margin-top: 40px;">B</span>
+    <span style="margin-top: 20px;">B</span>
     <span>U</span>
     <span>S</span>
   </div>
 
-  <!-- Bus departures -->
+  <!-- Main content: iFrame showing bus departures -->
   <iframe id="busFrame" src="https://www.bahnhof.de/hildesheim-hbf/abfahrt?verkehrsmittel=bus"></iframe>
 
-  <!-- Auto-scroll script -->
+  <!-- Decorative right-side bar -->
+  <div class="right-bar"></div>
+
+  <!-- JavaScript for scrolling content and live clock -->
   <script>
-    let scrollPos = 0;
-    let direction = 1;
-    let scrollSpeed = 2;
-    let maxScroll = window.innerHeight * 4;
+    let scrollPos = 0;                 // Current scroll Y position
+    let direction = 1;                 // 1 = scroll down, -1 = scroll up
+    let scrollSpeed = 2;              // Speed of scroll
+    let maxScroll = 3000;             // Max scroll value (will be updated dynamically)
+    const frame = document.getElementById('busFrame'); // Reference to the iframe
 
-    const frame = document.getElementById('busFrame');
+    // When iframe loads, try to calculate max scroll height
+    frame.onload = () => {
+      try {
+        const contentDoc = frame.contentDocument || frame.contentWindow.document;
+        maxScroll = contentDoc.body.scrollHeight - frame.clientHeight;
+      } catch (e) {
+        maxScroll = 3000; // Fallback in case of cross-origin issues
+      }
+    };
 
+    // Scroll animation function
     function scrollFrame() {
       scrollPos += scrollSpeed * direction;
       if (scrollPos >= maxScroll) {
-        direction = -1;
+        direction = -1; // Start scrolling back up
         setTimeout(() => {
-          frame.src = frame.src;
+          frame.src = frame.src; // Reload iframe content
           scrollPos = 0;
           direction = 1;
-        }, 2000);
+        }, 2000); // Pause before restarting
       }
-      frame.style.transform = `translateY(-${scrollPos}px)`;
+      frame.style.transform = `translateY(-${scrollPos}px)`; // Apply scroll effect
     }
 
-    window.addEventListener('load', () => {
-      setInterval(scrollFrame, 50);
-    });
+    // Update digital clock every second
+    function updateClock() {
+      const now = new Date();
+      const hrs = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const secs = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${hrs}:${mins}:${secs}`;
+    }
 
-    window.addEventListener('resize', () => {
-      maxScroll = window.innerHeight * 4;
+    // Start animations after page fully loads
+    window.addEventListener('load', () => {
+      setInterval(scrollFrame, 50);    // Start auto-scrolling
+      updateClock();                   // Set initial clock
+      setInterval(updateClock, 1000);  // Update every second
     });
   </script>
 
